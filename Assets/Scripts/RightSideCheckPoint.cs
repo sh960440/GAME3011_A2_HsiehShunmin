@@ -6,13 +6,15 @@ public class RightSideCheckPoint : MonoBehaviour
 {
     [SerializeField] private GameObject rightCrosshair;
     [SerializeField] private GameObject leftCrosshair;
+    [SerializeField] private Transform center;
     [SerializeField] private float radius = 2.5f;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Vector3 moveTo;
     
     void Start()
     {
-        FindNextPoint();
+        transform.position = new Vector3(Random.Range(3.0f, 6.0f), Random.Range(2.0f, -2.0f), transform.position.z);
+        moveTo = transform.position;
     }
 
     void Update()
@@ -24,12 +26,22 @@ public class RightSideCheckPoint : MonoBehaviour
             leftCrosshair.GetComponent<LeftSideCrosshair>().isMovable = distance <= 1 ? true : false;
         }
 
+        if (leftCrosshair.GetComponent<LeftSideCrosshair>().distanceCounter >= 2.0f)
+        {
+            leftCrosshair.GetComponent<LeftSideCrosshair>().distanceCounter = 0.0f;
+            FindNextPoint();
+        }
+
         Move();
     }
 
     void FindNextPoint()
     {
-        moveTo = new Vector3(transform.position.x + Random.Range(-1.0f, 1.0f), transform.position.y + Random.Range(-1.0f, 1.0f), transform.position.z);
+        do 
+        {
+            moveTo = new Vector3(transform.position.x + Random.Range(-1.0f, 1.0f), transform.position.y + Random.Range(-1.0f, 1.0f), transform.position.z);
+        } 
+        while(Vector3.Distance(moveTo, center.position) >= radius);
     }
 
     void Move()

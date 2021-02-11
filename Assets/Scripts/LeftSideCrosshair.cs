@@ -30,6 +30,7 @@ public class LeftSideCrosshair : MonoBehaviour
             
             transform.position += move;
             distanceCounter += move.magnitude;
+            Debug.Log(distanceCounter);
         }
     }
 
