@@ -37,7 +37,8 @@ public class LeftSideCrosshair : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("LeftPoint"))
-        {
+        {            
+            FindObjectOfType<GameManager>().Unlock();
             FindObjectOfType<LeftSideCheckPoint>().Respawn();
         }
     }
