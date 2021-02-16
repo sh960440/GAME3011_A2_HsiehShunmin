@@ -10,6 +10,7 @@ public class RightSideCheckPoint : MonoBehaviour
     [SerializeField] private float radius = 2.5f;
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] private Vector3 moveTo;
+    [SerializeField] private AudioSource sound;
     
     void Start()
     {
@@ -23,7 +24,12 @@ public class RightSideCheckPoint : MonoBehaviour
         if (distance <= 2)
         {
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1.0f - distance / 2.0f);
+            sound.volume = 0.5f - distance / 4;
             leftCrosshair.GetComponent<LeftSideCrosshair>().isMovable = distance <= 1 ? true : false;
+        }
+        else
+        {
+            sound.volume = 0;
         }
 
         if (leftCrosshair.GetComponent<LeftSideCrosshair>().distanceCounter >= 2.0f)

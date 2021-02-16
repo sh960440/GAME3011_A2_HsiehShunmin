@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
              Gameover(true); 
     }
 
-    private void Gameover(bool won)
+    public void Gameover(bool won)
     {
         isTiming = false;
         FindObjectOfType<LeftSideCrosshair>().gameObject.SetActive(false);

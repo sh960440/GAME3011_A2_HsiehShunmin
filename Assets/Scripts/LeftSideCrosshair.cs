@@ -41,5 +41,10 @@ public class LeftSideCrosshair : MonoBehaviour
             FindObjectOfType<GameManager>().Unlock();
             FindObjectOfType<LeftSideCheckPoint>().Respawn();
         }
+
+        if (other.CompareTag("Laser"))
+        {            
+            FindObjectOfType<GameManager>().Gameover(false);
+        }
     }
 }
