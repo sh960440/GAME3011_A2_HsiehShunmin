@@ -6,9 +6,14 @@ public class LeftSideCrosshair : MonoBehaviour
 {
     [SerializeField] private Transform center;
     [SerializeField] private float bound = 3.0f;
-    [SerializeField] private float speed = 2.0f;
+    [SerializeField] private float speed = 1.0f;
     public bool isMovable = false;
     public float distanceCounter = 0.0f;
+
+    void Start()
+    {
+        speed = 1.0f + FindObjectOfType<GameManager>().playerSkill * 0.2f;
+    }
 
     void Update()
     {
@@ -30,7 +35,6 @@ public class LeftSideCrosshair : MonoBehaviour
             
             transform.position += move;
             distanceCounter += move.magnitude;
-            Debug.Log(distanceCounter);
         }
     }
 

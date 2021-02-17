@@ -8,12 +8,26 @@ public class GameManager : MonoBehaviour
 {
     public float timer = 60.0f;
     public int unlockedPoint = 0;
-    [SerializeField] Text timerText;
+    public int playerSkill = 0;
     private bool isTiming = false;
+    [SerializeField] private Text timerText;
+    [SerializeField] private Text difficulty;
+    [SerializeField] private Text playerSkillText;
+    [SerializeField] private GameObject indicator;
     [SerializeField] private Image[] lights;
     [SerializeField] private Sprite greenLight;
     [SerializeField] private GameObject winScreen;
     [SerializeField] private GameObject loseScreen;
+
+    void Awake()
+    {
+        playerSkill = PlayerPrefs.GetInt("PlayerSkill");
+    }
+
+    void Start()
+    {
+        playerSkillText.text = "SKILL LEVEL: " + playerSkill;
+    }
 
     void Update()
     {
@@ -27,17 +41,32 @@ public class GameManager : MonoBehaviour
         }
 
         timerText.text = "TIME: " + timer.ToString("0.00");
-        //Debug.Log(timer);
     }
 
-    public void StartTimer()
+    public void StartLockpicking(int level)
     {
         isTiming = true;
-    }
-
-    public void StopTiming()
-    {
-        isTiming = false;
+        switch (level)
+        {
+            case 1:
+                FindObjectOfType<LaserController>().hasLaser = false;
+                foreach(GameObject h in FindObjectOfType<LaserController>().horizontalLaser)
+                    Destroy(h);
+                foreach(GameObject v in FindObjectOfType<LaserController>().verticalLaser)
+                    Destroy(v);
+                difficulty.text = "DIFFICULTY: EASY";
+                break;
+            case 2:
+                FindObjectOfType<LaserController>().hasLaser = true;
+                difficulty.text = "DIFFICULTY: MEDIUM";
+                break;
+            case 3:
+                FindObjectOfType<LaserController>().hasLaser = true;
+                indicator.GetComponent<SpriteRenderer>().enabled = false;
+                difficulty.color = Color.red;
+                difficulty.text = "DIFFICULTY: HARD";
+                break;
+        }
     }
 
     public void Unlock()
@@ -57,12 +86,18 @@ public class GameManager : MonoBehaviour
         if (won)
         {
             winScreen.SetActive(true);
+            if (playerSkill < 10)
+            playerSkill++;
         }
         else
         {
             timerText.text = "TIME: 0.00";
             loseScreen.SetActive(true);
+            if (playerSkill > 0)
+                playerSkill--;
         }
+
+        PlayerPrefs.SetInt("PlayerSkill", playerSkill);
     }
 
     public void Replay()

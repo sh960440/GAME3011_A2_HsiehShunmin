@@ -1,4 +1,4 @@
-﻿    using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,7 +25,7 @@ public class RightSideCheckPoint : MonoBehaviour
         {
             spriteRenderer.color = new Color(spriteRenderer.color.r, spriteRenderer.color.g, spriteRenderer.color.b, 1.0f - distance / 2.0f);
             sound.volume = 0.5f - distance / 4;
-            leftCrosshair.GetComponent<LeftSideCrosshair>().isMovable = distance <= 1 ? true : false;
+            leftCrosshair.GetComponent<LeftSideCrosshair>().isMovable = distance <= 1 + FindObjectOfType<GameManager>().playerSkill * 0.1f ? true : false;
         }
         else
         {
@@ -38,7 +38,7 @@ public class RightSideCheckPoint : MonoBehaviour
             FindNextPoint();
         }
 
-        Move();
+        transform.position = Vector3.Lerp(transform.position, moveTo, 0.5f * Time.deltaTime);
     }
 
     void FindNextPoint()
@@ -48,10 +48,5 @@ public class RightSideCheckPoint : MonoBehaviour
             moveTo = new Vector3(transform.position.x + Random.Range(-1.0f, 1.0f), transform.position.y + Random.Range(-1.0f, 1.0f), transform.position.z);
         } 
         while(Vector3.Distance(moveTo, center.position) >= radius);
-    }
-
-    void Move()
-    {
-        transform.position = Vector3.Lerp(transform.position, moveTo, 0.5f * Time.deltaTime);
     }
 }

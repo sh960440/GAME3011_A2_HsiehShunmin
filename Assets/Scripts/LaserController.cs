@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class LaserController : MonoBehaviour
 {
-    [SerializeField] private GameObject[] horizontalLaser;
-    [SerializeField] private GameObject[] verticalLaser;
+    public bool hasLaser;
+    public GameObject[] horizontalLaser;
+    public GameObject[] verticalLaser;
+    
     [SerializeField] private float timeInterval = 3.0f;
 
     private float timer = 0.0f;
@@ -13,24 +15,27 @@ public class LaserController : MonoBehaviour
 
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= timeInterval)
+        if (hasLaser)
         {
-            isHotrizontal = !isHotrizontal;
-
-            foreach(GameObject h in horizontalLaser)
+            timer += Time.deltaTime;
+            if (timer >= timeInterval)
             {
-                h.GetComponent<SpriteRenderer>().enabled = isHotrizontal;
-                h.GetComponent<BoxCollider2D>().enabled = isHotrizontal;
-            }
+                isHotrizontal = !isHotrizontal;
 
-            foreach(GameObject v in verticalLaser)
-            {
-                v.GetComponent<SpriteRenderer>().enabled = !isHotrizontal;
-                v.GetComponent<BoxCollider2D>().enabled = !isHotrizontal;
-            }
+                foreach(GameObject h in horizontalLaser)
+                {
+                    h.GetComponent<SpriteRenderer>().enabled = isHotrizontal;
+                    h.GetComponent<BoxCollider2D>().enabled = isHotrizontal;
+                }
 
-            timer = 0.0f;
-        }
+                foreach(GameObject v in verticalLaser)
+                {
+                    v.GetComponent<SpriteRenderer>().enabled = !isHotrizontal;
+                    v.GetComponent<BoxCollider2D>().enabled = !isHotrizontal;
+                }
+
+                timer = 0.0f;
+            }
+        } 
     }
 }
